@@ -1,3 +1,5 @@
+mod routes;
+
 use actix_web::{App, HttpServer};
 use dotenv::dotenv;
 use std::env;
@@ -11,7 +13,8 @@ async fn main() -> std::io::Result<()> {
     let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
     let server_url = format!("{}:{}", host, port);
 
-    HttpServer::new(move || App::new())
+    HttpServer::new(move || App::new()
+        .configure(routes::base_routes::configure))
         .bind(server_url)?
         .run()
         .await
